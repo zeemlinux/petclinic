@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir("/var/lib/jenkins/workspace/spring-petclinic") {
+                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                 sh './mvnw package'
                 sh 'java -jar target/*.jar'
                 }
