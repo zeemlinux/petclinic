@@ -16,7 +16,7 @@ pipeline {
             steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                 sh './mvnw package'
-                sh 'java -jar target/*.jar'
+                sh 'java -jar target/*.jar &'
                 }
             }
         }
