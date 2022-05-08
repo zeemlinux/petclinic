@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+    registry = "swagatam04/spring-petclinic"
+    registryCredential = 'dockerhub'
+  }
     agent any
     tools {
         maven "MAVEN"
