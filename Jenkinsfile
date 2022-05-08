@@ -47,5 +47,10 @@ pipeline {
         sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
+   stage('Cleanup Working Directory') {
+            steps{
+                cleanWs deleteDirs: true
+            }
+        }
   }
 }
