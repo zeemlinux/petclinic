@@ -24,7 +24,14 @@ pipeline {
                 }
             }
         }  
-        
+        stage('Test') {
+            steps {
+                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
+                    sh 'mvn test'
+                }
+            }
+        }
+            
         
      stage('Building image') {
       steps{
