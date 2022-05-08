@@ -21,12 +21,12 @@ pipeline {
             }
         }
        
-     stage('Building Image') {
+     stage('Building image') {
       steps{
-        
-          app = docker.build("swagatam04/spring-petclinic") 
-        
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
       }
-    }  
+    }
   }
 }
