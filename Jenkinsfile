@@ -23,9 +23,9 @@ pipeline {
        
      stage('Building Image') {
       steps{
-        script {
-          dockerImage = docker.build registry + ":latest"
-        }
+        
+          app = docker.build("swagatam04/spring-petclinic") 
+        
       }
     }  
   }
