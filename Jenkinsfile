@@ -9,7 +9,7 @@ pipeline {
             steps{
                 echo "PATH = ${M2_HOME}/bin:${PATH}"
                 echo "M2_HOME = /opt/apache-maven-3.8.2"
-                 git 'https://github.com/SWAGATAM04/spring-petclinic.git'
+                
             }
         }
         stage('Build') {
