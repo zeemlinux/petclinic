@@ -16,17 +16,17 @@ pipeline {
             steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                 sh './mvnw package'
-                sh 'java -jar target/*.jar &'
+               
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
+                    sh 'java -jar target/*.jar'
                 }
             }
         }
      }
-    post {
-       always {
-          junit(
-        allowEmptyResults: true,
-        testResults: '*/test-reports/.xml'
-      )
-      }
-   } 
+   
 }
