@@ -2,6 +2,9 @@ pipeline {
     environment {
     registry = "swagatam04/spring-petclinic"
     registryCredential = 'dockerhub'
+    AF_BASE_URL= 'https://artifactory.rosetta.ericssondevops.com/artifactory/sd-mana-att-sds-maven/att_swan/EOC'
+    AF_API_TOKEN='AKCp5e2gHgqTxm9hZav5tNBoqsPPhee5ZrhpEiiRuxdLWVd9yZfLmj3snLfpXkQDPHpppaHXg'
+    
   }
     agent any
     tools {
@@ -24,6 +27,16 @@ pipeline {
                 }
             }
         }  
+        stage('Jfrog Upload') {
+             steps {
+                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
+                sh 'jfrog rt c --url="$AF_BASE_URL" --apikey="$AF_API_TOKEN"'
+                 sh 'jfrog rt u "target/spring-petclinic-2.6.0-SNAPSHOT.jar" "$AF_BASE_URL/spring-petclinic-2.6.0-SNAPSHOT-$BUILD_NUMBER.jar" --recursive=false'
+               
+                }
+            }
+        }  
+            
         stage('Test') {
             steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
