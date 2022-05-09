@@ -2,9 +2,10 @@ pipeline {
     environment {
     registry = "swagatam04/spring-petclinic"
     registryCredential = 'dockerhub'
-    artifactoryurl = "https://swagatamjfrog.jfrog.io/artifactory/"
-    user = 'demo'
-    password = 'jfrog'
+    AWS_ACCOUNT_ID="098974694488"
+    AWS_DEFAULT_REGION="us-east-2" 
+    IMAGE_REPO_NAME="demo"
+    REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
    
     
   }
@@ -48,14 +49,14 @@ pipeline {
         }
             
         
-     stage('Building image') {
+     stage('Building DockerHub image') {
       steps{
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
-    stage('Push Image') {
+    stage('Push Image to DockerHub') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
@@ -64,9 +65,35 @@ pipeline {
         }
       }
     }
+    stage('Logging into AWS ECR') {
+            steps {
+                script {
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                }
+                
+            }
+        }
+     stage('Building ECR image') {
+      steps{
+        script {
+          dockerImage = docker.build "${IMAGE_REPO_NAME}:${BUILD_NUMBER}"
+        }
+      }
+    }
+        
+    stage('Pushing to ECR') {
+     steps{  
+         script {
+             sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${BUILD_NUMBER}"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${BUILD_NUMBER}"
+         }
+        }
+      }
+        
    stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
+        sh "docker rmi $IMAGE_REPO_NAME:$BUILD_NUMBER"
       }
     }
    stage('Cleanup Working Directory') {
