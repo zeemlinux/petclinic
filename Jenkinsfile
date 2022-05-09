@@ -68,7 +68,7 @@ pipeline {
      stage('Deploy to AWS ECR') {
             steps {
                 script{
-                        docker.withRegistry('https://098974694488.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:awscred') {
+                    docker.withRegistry('https://098974694488.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:awscred') {
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
                     
@@ -80,7 +80,7 @@ pipeline {
    stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
-        sh "docker rmi $IMAGE_REPO_NAME:$BUILD_NUMBER"
+        
       }
     }
    stage('Cleanup Working Directory') {
