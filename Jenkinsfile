@@ -2,7 +2,7 @@ pipeline {
     environment {
     registry = "swagatam04/spring-petclinic"
     registryCredential = 'dockerhub'
-    artifactory-url = 'https://swagatamjfrog.jfrog.io/artifactory/'
+    artifactory-url = "https://swagatamjfrog.jfrog.io/artifactory/"
     user = 'demo'
     password = 'jfrog'
    
