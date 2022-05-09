@@ -76,7 +76,7 @@ pipeline {
      stage('Deploy to AWS ECR') {
             steps {
                 script{
-                    docker.withRegistry( '', awscred ) {
+                    docker.withRegistry('https://098974694488.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:awscred') {
                     dockerImageAws.push()
                     
                     }
