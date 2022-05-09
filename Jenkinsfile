@@ -31,9 +31,9 @@ pipeline {
         }  
         stage('Jfrog Upload') {
              steps {
-                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
+                dir("/var/lib/jenkins/workspace/MAVENBUILD/target") {
                 sh 'jfrog c add --artifactory-url="https://swagatamjfrog.jfrog.io/artifactory/" --user="demo" --password="AKCp8mYoSbn1VTzSY6TyGvmeem5ugcr5igytHGx2gBa9rQQS4G1CVt1qA18yYZS2Nd6V94b3k"  --interactive="false"'
-                 sh 'jfrog rt u "target/spring-petclinic-2.6.0-SNAPSHOT.jar" test --recursive=false --recursive=false'
+                 sh 'jfrog rt u "spring-petclinic-2.6.0-SNAPSHOT.jar" "test/pring-petclinic-2.6.0-SNAPSHOT-$BUILD_NUMBER.jar" --recursive=false'
                
                 }
             }
