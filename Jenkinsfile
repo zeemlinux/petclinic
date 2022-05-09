@@ -2,8 +2,10 @@ pipeline {
     environment {
     registry = "swagatam04/spring-petclinic"
     registryCredential = 'dockerhub'
-    AF_BASE_URL= 'https://artifactory.rosetta.ericssondevops.com/artifactory/sd-mana-att-sds-maven/att_swan/EOC'
-    AF_API_TOKEN='AKCp5e2gHgqTxm9hZav5tNBoqsPPhee5ZrhpEiiRuxdLWVd9yZfLmj3snLfpXkQDPHpppaHXg'
+    artifactory-url = 'https://swagatamjfrog.jfrog.io/artifactory/'
+    user = 'demo'
+    password = 'jfrog'
+   
     
   }
     agent any
@@ -30,8 +32,8 @@ pipeline {
         stage('Jfrog Upload') {
              steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
-                sh 'jfrog rt c --url="$AF_BASE_URL" --apikey="$AF_API_TOKEN"'
-                 sh 'jfrog rt u "target/spring-petclinic-2.6.0-SNAPSHOT.jar" "$AF_BASE_URL/spring-petclinic-2.6.0-SNAPSHOT-$BUILD_NUMBER.jar" --recursive=false'
+                sh 'jfrog c add --artifactory-url="https://swagatamjfrog.jfrog.io/artifactory/" --user="demo" --password="AKCp8mYoSbn1VTzSY6TyGvmeem5ugcr5igytHGx2gBa9rQQS4G1CVt1qA18yYZS2Nd6V94b3k"  --interactive="false"'
+                 sh 'jfrog rt u "target/spring-petclinic-2.6.0-SNAPSHOT.jar" test --recursive=false --recursive=false'
                
                 }
             }
