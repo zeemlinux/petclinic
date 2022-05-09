@@ -65,12 +65,19 @@ pipeline {
         }
       }
     }
+        
+    stage('Building ECR image') {
+      steps{
+        script {
+          dockerImageAws = docker.build REPOSITORY_URI + ":$BUILD_NUMBER"
+        }
+      }
+    }
      stage('Deploy to AWS ECR') {
             steps {
                 script{
-                    docker.withRegistry('https://098974694488.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:awscred') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
+                    docker.withRegistry( '', awscred ) {
+                    dockerImageAws.push()
                     
                     }
                 }
@@ -80,6 +87,7 @@ pipeline {
    stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
+        sh "docker rmi $REPOSITORY_URI:$BUILD_NUMBER"
         
       }
     }
