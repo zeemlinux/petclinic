@@ -70,6 +70,7 @@ pipeline {
                 script{
                         docker.withRegistry('https://098974694488.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:awscred') {
                     app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
                     
                     }
                 }
