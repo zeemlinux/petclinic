@@ -22,11 +22,12 @@ pipeline {
                 
             }
         }
-        stage('Build') {
+        stage('Build and SonarAnalysis') {
             steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
-                sh './mvnw package'
-               
+                    withSonarQubeEnv('sonar') {
+                         sh './mvnw package'
+                    }
                 }
             }
         }  
