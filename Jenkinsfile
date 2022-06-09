@@ -27,6 +27,7 @@ pipeline {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                     withSonarQubeEnv('sonar') {
                          sh './mvnw package'
+                         sh './mvnw sonarqube'
                     }
                 }
             }
