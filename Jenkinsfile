@@ -36,7 +36,7 @@ pipeline {
                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                 withSonarQubeEnv('sonarqube') {
                       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                      sh "sonar-scanner"
+                      
                 }
                  timeout(time: 10, unit: 'MINUTES') {
                               waitForQualityGate abortPipeline: true
