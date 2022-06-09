@@ -31,9 +31,7 @@ pipeline {
             }
         }  
       stage('Sonarqube') {
-         environment {
-               scannerHome = tool 'SonarQubeScanner'
-                    }
+        
            steps {
                dir("/var/lib/jenkins/workspace/MAVENBUILD") {
                 withSonarQubeEnv('sonarqube') {
