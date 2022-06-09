@@ -22,16 +22,29 @@ pipeline {
                 
             }
         }
-        stage('Build and SonarAnalysis') {
+        stage('Build') {
             steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD") {
-                    withSonarQubeEnv('sonar') {
                          sh './mvnw package'
-                         sh './mvnw sonarqube'
-                    }
+                         
                 }
             }
         }  
+      stage('Sonarqube') {
+         environment {
+               scannerHome = tool 'SonarQubeScanner'
+                    }
+           steps {
+               dir("/var/lib/jenkins/workspace/MAVENBUILD") {
+                withSonarQubeEnv('sonarqube') {
+                      sh "sonar-scanner"
+                }
+                 timeout(time: 10, unit: 'MINUTES') {
+                              waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
         stage('Jfrog Upload') {
              steps {
                 dir("/var/lib/jenkins/workspace/MAVENBUILD/target") {
