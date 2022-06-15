@@ -62,7 +62,13 @@ pipeline {
             }
         }
         
-        
+     stage('Delete Container and Image') {
+      steps{
+        sh "docker rm -f $(docker ps -a|grep -i $registry |awk '{print $1}')"
+        sh "docker rmi -f $(docker image ls|egrep -i '$registry|$IMAGE_REPO_NAME')"
+                
+      }
+    }  
      stage('Building DockerHub image') {
       steps{
         script {
