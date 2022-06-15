@@ -64,8 +64,10 @@ pipeline {
         
      stage('Delete Container and Image') {
       steps{
-        sh "docker ps -a|grep -i $registry |awk '{print $1}'|xargs docker rm -f"
-        sh "docker image ls|egrep -i '$registry|$IMAGE_REPO_NAME'|xargs docker rmi -f"
+        sh  """#!/bin/bash
+          docker ps -a|grep -i $registry |awk '{print $1}'|xargs docker rm -f
+          docker image ls|egrep -i '$registry|$IMAGE_REPO_NAME'|xargs docker rmi -f
+           """
                 
       }
     }  
