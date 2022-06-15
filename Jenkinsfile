@@ -65,10 +65,10 @@ pipeline {
      stage('Delete Container and Image') {
       steps{
         sh  """#!/bin/bash
-          docker ps -a|grep -i $registry |awk '{print $1}'|xargs docker rm -f
-          docker image ls|egrep -i '$registry|$IMAGE_REPO_NAME'|xargs docker rmi -f
+          docker ps -a|grep -i $registry |awk \'{print $1}\'|xargs docker rm -f
+          docker image ls|egrep -i '$registry|$IMAGE_REPO_NAME'|awk \'{print $3}\'|xargs docker rmi -f
            """
-                
+               
       }
     }  
      stage('Building DockerHub image') {
