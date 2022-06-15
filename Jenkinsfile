@@ -62,13 +62,6 @@ pipeline {
             }
         }
         
-      stage('Remove Unused docker image') {
-        steps{
-          sh "docker rmi -f $(docker image ls|egrep -i "petclinic" |grep -v db |awk '{print $3}')"
-          
-        
-      }
-    }   
         
      stage('Building DockerHub image') {
       steps{
