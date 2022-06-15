@@ -61,7 +61,14 @@ pipeline {
                 }
             }
         }
-            
+        
+      stage('Remove Unused docker image') {
+        steps{
+          sh "docker rmi -f $(docker image ls|egrep -i "petclinic" |grep -v db |awk '{print $3}')"
+          
+        
+      }
+    }   
         
      stage('Building DockerHub image') {
       steps{
@@ -97,14 +104,14 @@ pipeline {
                 }
             }
         }
-        
-   stage('Remove Unused docker image') {
+   
+    stage('Start Container') {
       steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-        sh "docker rmi $REPOSITORY_URI:$BUILD_NUMBER"
-        
+        sh "docker run -itd -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=postgres"  --link spring-petclinic_petclinic-db.default.svc.cluster.local_1:petclinic-db.default.svc.cluster.local --network spring-petclinic_default $registry:$BUILD_NUMBER"
+                
       }
     }
+  
    stage('Cleanup Working Directory') {
             steps{
                 cleanWs deleteDirs: true
