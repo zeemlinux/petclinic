@@ -100,7 +100,7 @@ pipeline {
    
     stage('Start Container') {
       steps{
-        sh "docker run -itd -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=postgres"  --link spring-petclinic_petclinic-db.default.svc.cluster.local_1:petclinic-db.default.svc.cluster.local --network spring-petclinic_default $registry:$BUILD_NUMBER"
+        sh 'docker run -itd -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=postgres"  --link spring-petclinic_petclinic-db.default.svc.cluster.local_1:petclinic-db.default.svc.cluster.local --network spring-petclinic_default $registry:$BUILD_NUMBER'
                 
       }
     }
