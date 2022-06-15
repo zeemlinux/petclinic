@@ -64,7 +64,7 @@ pipeline {
         
      stage('Delete Container and Image') {
       steps{
-        sh 'docker rmi $(docker images | egrep "^$repo|^$IMAGE_REPO_NAME" | awk \'{print $3}\') || true'
+        sh 'docker rmi $(docker images | egrep -i "^$repo|^$IMAGE_REPO_NAME" | awk \'{print $3}\') || true'
                
       }
     }  
